@@ -33,7 +33,7 @@ A public **demo** is available at [demo.hilde.gg](https://demo.hilde.gg).
 - **Light/Dark theme**
 - Match comments
 - **Leaderboards**
-- *Optional*: Deployable for free with Vercel & Planetscale
+- *Optional*: Deployable for free with Vercel & Supabase
 - *Optional*: Fully dockerized
 
 ## ⭐ Getting Started
@@ -42,56 +42,27 @@ Hilde can be installed in a few minutes, either by deploying it to Vercel, using
 
 Requirements:
 
-- Node 14
-- MySQL (5.7+)
+- Node 14+
+- PostgreSQL (via [Supabase](https://supabase.com) or local Docker)
 
 Keep in mind that after installing you need to add a season via the admin ui (`/admin`) using the password from the environment variable (`ADMIN_PASSWORD`).
 
-### Free hosting with Vercel & Planetscale
+See **[SUPABASE.md](./SUPABASE.md)** for full Supabase + Vercel setup.
 
-Hilde is designed in a way that it could easily be hosted for free, using [Vercel](https://vercel.com) for hosting
-and [Planetscale](https://planetscale.com) for the database.
+### Free hosting with Vercel & Supabase
+
+Hilde can be hosted for free using [Vercel](https://vercel.com) for hosting and [Supabase](https://supabase.com) for PostgreSQL.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnehalist%2Fhilde)
 
-### Docker Compose
+### Docker Compose (local PostgreSQL)
 
-Example `docker-compose.yml`:
-
-```yaml
-version: '3'
-
-services:
-  hilde:
-    depends_on:
-      - database
-    networks:
-      - internal
-    image: nehalist/hilde
-    ports:
-      - '127.0.0.1:3000:3000'
-    environment:
-      - DATABASE_URL=mysql://root:hildepw@database:3306/hilde
-      - ADMIN_PASSWORD=v3rys3cr3tp4ssw0rd
-
-  database:
-    networks:
-      - internal
-    image: mysql:8.0
-    environment:
-      - MYSQL_DATABASE=hilde
-      - MYSQL_ROOT_PASSWORD=hildepw
-    volumes:
-      - db:/var/lib/mysql
-
-volumes:
-  db:
-
-networks:
-  internal:
+```bash
+docker-compose up -d   # starts PostgreSQL on localhost:5432
+cp .env.example .env
+npm run migrate
+npm run dev
 ```
-
-After running `docker-compose up -d` Hilde is running on `localhost:3000`.
 
 ### Manually (for development)
 
@@ -106,7 +77,7 @@ After running `docker-compose up -d` Hilde is running on `localhost:3000`.
 The official Docker image of Hilde is available on [Docker Hub](https://hub.docker.com/repository/docker/nehalist/hilde). Run it locally
 via:
 
-1. Run `docker run -p 127.0.0.1:3000:3000 -e DATABASE_URL=mysql://<user>:<password>@<host>:<port>/<db> nehalist/hilde`
+1. Run `docker run -p 127.0.0.1:3000:3000 -e DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<db> -e DIRECT_URL=... nehalist/hilde`
 2. Open `http://localhost:3000`
 3. Done.
 
@@ -132,12 +103,13 @@ Hilde provides a set of utility terminal commands:
 
 Hilde can be configured via environment variables in the `.env` file.
 
-| Variable          | Description                | Default                                        |
-|-------------------|----------------------------|------------------------------------------------|
-| `ADMIN_PASSWORD`  | Administration password    | `h1ldeb3steV3r`                                |
-| `NEXTAUTH_SECRET` | Token secret               | `+Zrk5zW6fgog5k0LbN4bxL1YXKIhvb65Yln5ZKf+g3o=` |
-| `NEXTAUTH_URL`    | Deployed URL of Hilde      | `http://localhost:3000`                        |
-| `DATABASE_URL`    | Database connection string | `mysql://root:hildepw@localhost:3309/hilde`    |
+| Variable          | Description                          | Example |
+|-------------------|--------------------------------------|---------|
+| `ADMIN_PASSWORD`  | Administration password              | `change-me` |
+| `NEXTAUTH_SECRET` | Token secret                         | random string |
+| `NEXTAUTH_URL`    | Deployed URL of Hilde                | `http://localhost:3000` |
+| `DATABASE_URL`    | PostgreSQL pooler connection         | Supabase Transaction (6543) |
+| `DIRECT_URL`      | PostgreSQL direct connection         | Supabase Session (5432) |
 
 ## 👐 Contributing
 
