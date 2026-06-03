@@ -108,8 +108,8 @@ Hilde can be configured via environment variables in the `.env` file.
 | `ADMIN_PASSWORD`  | Administration password              | `change-me` |
 | `NEXTAUTH_SECRET` | Token secret                         | random string |
 | `NEXTAUTH_URL`    | Deployed URL of Hilde                | `http://localhost:3000` |
-| `DATABASE_URL`    | PostgreSQL pooler connection         | Supabase Transaction (6543) |
-| `DIRECT_URL`      | PostgreSQL direct connection         | Supabase Session (5432) |
+| `DATABASE_URL`    | PostgreSQL pooler connection (Supabase **Transaction**, port 6543) | Supabase Transaction (6543) |
+| `DIRECT_URL`      | PostgreSQL direct connection for migrations (Supabase **Session**, port 5432) | Supabase Session (5432) |
 
 ## 👐 Contributing
 
