@@ -14,7 +14,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx next telemetry disable
 RUN npx prisma generate
-RUN NEXT_PUBLIC_SEASON=APP_NEXT_PUBLIC_SEASON npm run build
+RUN DOCKER_BUILD=true NEXT_PUBLIC_SEASON=APP_NEXT_PUBLIC_SEASON npm run build
 
 # 3. Production image, copy all the files and run next
 FROM node:alpine3.16 AS runner
