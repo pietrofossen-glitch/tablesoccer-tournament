@@ -21,16 +21,12 @@ In [Project Settings → Database](https://supabase.com/dashboard/project/rutbtp
 
 | Variabile | Tipo in Supabase | Porta |
 |-----------|------------------|-------|
-| `DATABASE_URL` | **Transaction** pooler | 6543 |
-| `DIRECT_URL` | **Session** pooler (o Direct) | 5432 |
+| `DATABASE_URL` | **Session** pooler | 5432 |
 
-Aggiungi `?pgbouncer=true` alla `DATABASE_URL` se non c’è già.
-
-Esempio:
+Esempio (Vercel — basta questa):
 
 ```env
-DATABASE_URL=postgresql://postgres.rutbtpqvcxzyorboosep:[PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?pgbouncer=true
-DIRECT_URL=postgresql://postgres.rutbtpqvcxzyorboosep:[PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:5432/postgres
+DATABASE_URL=postgresql://postgres.rutbtpqvcxzyorboosep:[PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:5432/postgres
 ```
 
 > Sostituisci `[PASSWORD]` con la password del database e verifica la **region** (es. `eu-central-1`) nel dashboard — potrebbe essere diversa.
@@ -51,8 +47,7 @@ In **Vercel → Project → Settings → Environment Variables**:
 
 | Variabile | Valore |
 |-----------|--------|
-| `DATABASE_URL` | Transaction pooler (6543) |
-| `DIRECT_URL` | Session/direct (5432) |
+| `DATABASE_URL` | Session pooler (5432) |
 | `ADMIN_PASSWORD` | Password admin `/admin` |
 | `NEXTAUTH_SECRET` | Stringa random lunga |
 | `NEXTAUTH_URL` | `https://tuo-progetto.vercel.app` |
